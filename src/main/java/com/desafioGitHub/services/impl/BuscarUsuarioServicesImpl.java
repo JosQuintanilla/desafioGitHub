@@ -1,8 +1,5 @@
 package com.desafioGitHub.services.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -12,53 +9,83 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.desafioGitHub.Utils;
+import com.desafioGitHub.Constantes;
+import com.desafioGitHub.entity.Repositorios;
+import com.desafioGitHub.entity.Usuario;
+import com.desafioGitHub.entity.response.RepositoriosResponse;
+import com.desafioGitHub.entity.response.UsuarioResponse;
 import com.desafioGitHub.services.BuscarUsuarioServices;
+import com.desafioGitHub.utils.Utils;
 
 @Service
 public class BuscarUsuarioServicesImpl implements BuscarUsuarioServices{
 
 	private static final Logger LOG = LoggerFactory.getLogger(BuscarUsuarioServicesImpl.class);
 	
-	private static final String endPointGitHub = "https://github.com/";
-
 	@Override
-	public String buscarUsuario(String username) {
+	public UsuarioResponse buscarUsuario(String username) {
 		LOG.info("[buscarUsuario] - Init");
+		UsuarioResponse resultado = new UsuarioResponse();
 		try {
 			LOG.info("[buscarUsuario] - username: {}",username);
 			HttpHeaders requestHeaders = new HttpHeaders();
 			requestHeaders.add("Content-Type", "application/json");
 			
-			ResponseEntity<String> responseEntity = null;
+			ResponseEntity<Usuario> responseEntity = null;
 			HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
 			
 			RestTemplate restTemplate = Utils.getRestTemplate();
-			responseEntity = restTemplate.exchange(endPointGitHub + username, HttpMethod.GET, requestEntity, String.class);
+			responseEntity = restTemplate.exchange(Constantes.ENDPOINT_GITHUB_USERS + username, HttpMethod.GET, requestEntity, Usuario.class);
 			
 			if(responseEntity != null & responseEntity.getBody() != null) {
 				LOG.info("[buscarUsuario] - responseEntity : {}",responseEntity.getBody());
+				resultado.setCodigo(Constantes.RESULTADO_OK);
+				resultado.setMensaje(Constantes.MENSAJE_OK);
+				resultado.setUsuario(responseEntity.getBody());
 			}else {
 				LOG.info("[buscarUsuario] - responseEntity null");
+				resultado.setCodigo(Constantes.RESULTADO_NOK);
+				resultado.setMensaje(Constantes.MENSAJE_NOK);
 			}			
 		} catch (Exception e) {
 			LOG.error("buscarUsuario - ERROR: ",e);
 		}
 		LOG.info("[buscarUsuario] - End");
-		return username;
+		return resultado;
 	}
 
 	@Override
-	public List<String> listarRepositorios(String username) {
+	public RepositoriosResponse listarRepositorios(String username) {
 		LOG.info("[listarRepositorios] - Init");
-		List<String> listarRepositorios = new ArrayList<String>();
+		RepositoriosResponse repositoriosResponse = new RepositoriosResponse();
 		try {
 			LOG.info("[listarRepositorios] - username: {}",username);
-			listarRepositorios.add(username);
+			String endPoint = Constantes.ENDPOINT_GITHUB_REPOS;			
+			endPoint = endPoint.replace("?", username);
+			LOG.info("[listarRepositorios] - endPoint: {}",endPoint);
+			HttpHeaders requestHeaders = new HttpHeaders();
+			requestHeaders.add("Content-Type", "application/json");
+			
+			ResponseEntity<Repositorios> responseEntity = null;
+			HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
+			
+			RestTemplate restTemplate = Utils.getRestTemplate();
+			responseEntity = restTemplate.exchange(endPoint, HttpMethod.GET, requestEntity, Repositorios.class);
+			
+			if(responseEntity != null & responseEntity.getBody() != null) {
+				LOG.info("[listarRepositorios] - responseEntity : {}",responseEntity.getBody());
+				repositoriosResponse.setCodigo(Constantes.RESULTADO_OK);
+				repositoriosResponse.setMensaje(Constantes.MENSAJE_OK);
+				//repositoriosResponse.setListaRepositorios(responseEntity.getBody());
+			}else {
+				LOG.info("[listarRepositorios] - responseEntity null");
+				repositoriosResponse.setCodigo(Constantes.RESULTADO_NOK);
+				repositoriosResponse.setMensaje(Constantes.MENSAJE_NOK);
+			}
 		} catch (Exception e) {
 			LOG.error("[listarRepositorios] - ERROR: ",e);
 		}
 		LOG.info("[listarRepositorios] - End");
-		return listarRepositorios;
+		return repositoriosResponse;
 	}
 }

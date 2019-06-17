@@ -1,4 +1,4 @@
-package com.desafioGitHub;
+package com.desafioGitHub.utils;
 
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;

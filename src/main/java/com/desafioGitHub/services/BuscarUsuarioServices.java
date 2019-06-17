@@ -1,10 +1,11 @@
 package com.desafioGitHub.services;
 
-import java.util.List;
+import com.desafioGitHub.entity.response.RepositoriosResponse;
+import com.desafioGitHub.entity.response.UsuarioResponse;
 
 public interface BuscarUsuarioServices {
 
-	public String buscarUsuario(String username);
+	public UsuarioResponse buscarUsuario(String username);
 
-	public List<String> listarRepositorios(String username);
+	public RepositoriosResponse listarRepositorios(String username);
 }
