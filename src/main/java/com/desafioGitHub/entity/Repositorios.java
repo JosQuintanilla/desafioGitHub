@@ -27,6 +27,8 @@ public class Repositorios {
 	private String fullName;
 	@JsonProperty("private")
 	private Boolean _private;
+	@JsonProperty("owner")
+	private Usuario owner;
 	@JsonProperty("html_url")
 	private String htmlUrl;
 	@JsonProperty("description")
@@ -245,7 +247,7 @@ public class Repositorios {
 	 * @param disabled
 	 * @param defaultBranch
 	 */
-	public Repositorios(Integer id, String nodeId, String name, String fullName, Boolean _private, 
+	public Repositorios(Integer id, String nodeId, String name, String fullName, Boolean _private, Usuario owner,
 			String htmlUrl, String description, Boolean fork, String url, String forksUrl, String keysUrl,
 			String collaboratorsUrl, String teamsUrl, String hooksUrl, String issueEventsUrl, String eventsUrl,
 			String assigneesUrl, String branchesUrl, String tagsUrl, String blobsUrl, String gitTagsUrl,
@@ -266,6 +268,7 @@ public class Repositorios {
 		this.name = name;
 		this.fullName = fullName;
 		this._private = _private;
+		this.owner = owner;
 		this.htmlUrl = htmlUrl;
 		this.description = description;
 		this.fork = fork;
@@ -383,6 +386,16 @@ public class Repositorios {
 	@JsonProperty("private")
 	public void setPrivate(Boolean _private) {
 		this._private = _private;
+	}
+
+	@JsonProperty("owner")
+	public Usuario getOwner() {
+		return owner;
+	}
+
+	@JsonProperty("owner")
+	public void setOwner(Usuario owner) {
+		this.owner = owner;
 	}
 
 	@JsonProperty("html_url")
@@ -1057,13 +1070,13 @@ public class Repositorios {
 
 	@Override
 	public String toString() {
-		return "ReposResponseGitHub [id=" + id + ", nodeId=" + nodeId + ", name=" + name + ", fullName=" + fullName
-				+ ", _private=" + _private + ", htmlUrl=" + htmlUrl + ", description=" + description + ", fork=" + fork
-				+ ", url=" + url + ", forksUrl=" + forksUrl + ", keysUrl=" + keysUrl + ", collaboratorsUrl="
-				+ collaboratorsUrl + ", teamsUrl=" + teamsUrl + ", hooksUrl=" + hooksUrl + ", issueEventsUrl="
-				+ issueEventsUrl + ", eventsUrl=" + eventsUrl + ", assigneesUrl=" + assigneesUrl + ", branchesUrl="
-				+ branchesUrl + ", tagsUrl=" + tagsUrl + ", blobsUrl=" + blobsUrl + ", gitTagsUrl=" + gitTagsUrl
-				+ ", gitRefsUrl=" + gitRefsUrl + ", treesUrl=" + treesUrl + ", statusesUrl=" + statusesUrl
+		return "Repositorios [id=" + id + ", nodeId=" + nodeId + ", name=" + name + ", fullName=" + fullName
+				+ ", _private=" + _private + ", owner=" + owner + ", htmlUrl=" + htmlUrl + ", description="
+				+ description + ", fork=" + fork + ", url=" + url + ", forksUrl=" + forksUrl + ", keysUrl=" + keysUrl
+				+ ", collaboratorsUrl=" + collaboratorsUrl + ", teamsUrl=" + teamsUrl + ", hooksUrl=" + hooksUrl
+				+ ", issueEventsUrl=" + issueEventsUrl + ", eventsUrl=" + eventsUrl + ", assigneesUrl=" + assigneesUrl
+				+ ", branchesUrl=" + branchesUrl + ", tagsUrl=" + tagsUrl + ", blobsUrl=" + blobsUrl + ", gitTagsUrl="
+				+ gitTagsUrl + ", gitRefsUrl=" + gitRefsUrl + ", treesUrl=" + treesUrl + ", statusesUrl=" + statusesUrl
 				+ ", languagesUrl=" + languagesUrl + ", stargazersUrl=" + stargazersUrl + ", contributorsUrl="
 				+ contributorsUrl + ", subscribersUrl=" + subscribersUrl + ", subscriptionUrl=" + subscriptionUrl
 				+ ", commitsUrl=" + commitsUrl + ", gitCommitsUrl=" + gitCommitsUrl + ", commentsUrl=" + commentsUrl
@@ -1081,5 +1094,5 @@ public class Repositorios {
 				+ ", forks=" + forks + ", openIssues=" + openIssues + ", watchers=" + watchers + ", defaultBranch="
 				+ defaultBranch + "]";
 	}
-
+	
 }
